@@ -9,6 +9,10 @@
 
 # production
 /build
+/dist
+
+# coverage
+/coverage
 
 # debug
 npm-debug.log*
@@ -16,8 +20,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# caches
+/.cache
+.eslintcache
+.turbo
+
 # env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -25,3 +35,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors/IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
