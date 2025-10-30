@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useSimulationStore } from "@/store/simulation-store"
+import { useSimulationStore, useSimulationLogs } from "@/store/simulation-store"
 import { useModelById } from "@/store/model-store"
 import { Download, Play, Pause, RotateCcw, Save } from "lucide-react"
 import { useState } from "react"
@@ -11,7 +11,7 @@ export default function ControlPanel({ modelId }: { modelId: string }) {
   const running = useSimulationStore((s) => s.running[modelId] ?? false)
   const setRunning = useSimulationStore((s) => s.setRunning)
   const reset = useSimulationStore((s) => s.reset)
-  const logs = useSimulationStore((s) => s.logs[modelId] ?? [])
+  const logs = useSimulationLogs(modelId)
   const saveSimulation = useSimulationStore((s) => s.saveSimulation)
   const saveSimulationConfig = useSimulationStore((s) => s.saveSimulationConfig)
   const model = useModelById(modelId)
