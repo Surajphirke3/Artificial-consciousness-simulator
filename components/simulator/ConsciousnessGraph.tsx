@@ -2,12 +2,58 @@
 
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Points, PointMaterial } from "@react-three/drei"
-import { useMemo } from "react"
+import { useMemo, useEffect, useState } from "react"
 import * as THREE from "three"
-import { useModelStore } from "@/store/model-store"
+import { useModelParams } from "@/store/model-store"
+import { useSimulationLogs, useSimulationRunning } from "@/store/simulation-store"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
 export default function ConsciousnessGraph({ modelId }: { modelId: string }) {
-  const params = useModelStore((s) => s.models.find((m) => m.id === modelId)?.params)
+  const params = useModelParams(modelId)
+  const running = useSimulationRunning(modelId)
+  const logs = useSimulationLogs(modelId)
+  const [chartData, setChartData] = useState<Array<{ time: number; consciousness: number }>>([])
+
+  useEffect(() => {
+    const data = logs
+      .map((log, idx) => {
+        const match = log.match(/Consciousness: (\d+)%/)
+        return {
+          time: idx,
+          consciousness: match ? Number.parseInt(match[1]) : 0,
+        }
+      })
+      .filter((d) => d.consciousness > 0)
+    setChartData(data)
+  }, [logs])
+
+  if (chartData.length > 0) {
+    return (
+      <div className="w-full h-full p-4">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+            <XAxis dataKey="time" stroke="var(--color-muted-foreground)" />
+            <YAxis stroke="var(--color-muted-foreground)" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--color-card)",
+                border: "1px solid var(--color-border)",
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="consciousness"
+              stroke="var(--color-chart-2)"
+              dot={false}
+              isAnimationActive={running}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
   return (
     <Canvas camera={{ position: [0, 0, 6], fov: 60 }}>
       <ambientLight intensity={0.6} />

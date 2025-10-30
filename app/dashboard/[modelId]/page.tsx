@@ -1,23 +1,25 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import DashboardHeader from "@/components/layout/DashboardHeader"
 import ConsciousnessGraph from "@/components/simulator/ConsciousnessGraph"
 import ThoughtLog from "@/components/simulator/ThoughtLog"
 import ControlPanel from "@/components/simulator/ControlPanel"
 import ModelParameters from "@/components/simulator/ModelParameters"
 import ModelComparison from "@/components/simulator/ModelComparison"
-import { useModelStore } from "@/store/model-store"
+import { useModelById } from "@/store/model-store"
 import { Separator } from "@/components/ui/separator"
 
 export default function ModelWorkspace() {
   const { modelId } = useParams<{ modelId: string }>()
   const router = useRouter()
-  const model = useModelStore((s) => s.models.find((m) => m.id === modelId))
+  const model = useModelById(modelId)
+  const redirectAttempted = useRef(false)
 
   useEffect(() => {
-    if (!model) {
+    if (!model && !redirectAttempted.current) {
+      redirectAttempted.current = true
       router.replace("/dashboard")
     }
   }, [model, router])
