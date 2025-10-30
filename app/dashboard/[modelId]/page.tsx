@@ -10,6 +10,8 @@ import ModelParameters from "@/components/simulator/ModelParameters"
 import ModelComparison from "@/components/simulator/ModelComparison"
 import { useModelById } from "@/store/model-store"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import DataGraph from "@/components/DataGraph"
 
 export default function ModelWorkspace() {
   const { modelId } = useParams<{ modelId: string }>()
@@ -52,12 +54,41 @@ export default function ModelWorkspace() {
       </div>
 
       <div className="rounded-lg border border-border bg-card p-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <ControlPanel modelId={model.id} />
-          <ModelParameters modelId={model.id} />
-        </div>
-        <Separator className="my-4" />
-        <ModelComparison activeId={model.id} />
+        <Tabs defaultValue="controls" className="w-full">
+          <TabsList>
+            <TabsTrigger value="controls">Controls</TabsTrigger>
+            <TabsTrigger value="parameters">Parameters</TabsTrigger>
+            <TabsTrigger value="logs">Logs</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+          <TabsContent value="controls">
+            <ControlPanel modelId={model.id} />
+          </TabsContent>
+          <TabsContent value="parameters">
+            <ModelParameters modelId={model.id} />
+          </TabsContent>
+          <TabsContent value="logs">
+            <div className="h-[320px]">
+              <ThoughtLog modelId={model.id} />
+            </div>
+          </TabsContent>
+          <TabsContent value="analytics">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="h-[320px]">
+                <DataGraph
+                  title="Awareness Trend"
+                  type="line"
+                  height={300}
+                  data={[]}
+                  lines={[{ key: "consciousness", name: "Consciousness", color: "#22d3ee" }]}
+                />
+              </div>
+              <div className="h-[320px]">
+                <ModelComparison activeId={model.id} />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

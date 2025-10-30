@@ -7,6 +7,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import UniversalNav from "@/components/layout/UniversalNav"
+import { I18nProvider } from "@/lib/i18n"
 
 export const metadata: Metadata = {
   title: "Artificial Consciousness Simulator | Explore AI & Consciousness Theories",
@@ -68,10 +69,12 @@ export default function RootLayout({
           Skip to main content
         </a>
         <Suspense fallback={null}>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <UniversalNav />
-            <main id="main-content">{children}</main>
-          </ThemeProvider>
+          <I18nProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+              <UniversalNav />
+              <main id="main-content">{children}</main>
+            </ThemeProvider>
+          </I18nProvider>
         </Suspense>
         <Analytics />
       </body>
