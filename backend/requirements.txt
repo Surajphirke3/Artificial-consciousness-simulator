@@ -1,0 +1,11 @@
+# Web Application Framework
+Flask>=3.0.0
+
+# JAX and its ecosystem for ML
+jax>=0.4.25
+flax>=0.8.0
+optax
+
+# Core numerical and ML libraries
+numpy>=2.0
+torch>=2.5.0
