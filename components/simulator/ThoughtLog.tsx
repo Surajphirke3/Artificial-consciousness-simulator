@@ -21,7 +21,13 @@ export default function ThoughtLog({ modelId }: { modelId: string }) {
   }, [running, modelId, pushThought])
 
   return (
-    <div className="h-full overflow-auto rounded-md border border-border p-2 text-sm">
+    <div
+      className="h-full overflow-auto rounded-md border border-border p-2 text-sm"
+      role="log"
+      aria-label="Simulation thought log"
+      aria-live="polite"
+      aria-atomic="false"
+    >
       {thoughts.length === 0 ? (
         <p className="text-muted-foreground">No thoughts yet. Start the simulation.</p>
       ) : (

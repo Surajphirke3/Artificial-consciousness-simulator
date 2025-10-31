@@ -4,12 +4,14 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Sparkles, Play, GraduationCap } from "lucide-react"
+import { Sparkles, Play, GraduationCap, HelpCircle } from "lucide-react"
+import OnboardingModal from "@/components/OnboardingModal"
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="relative overflow-hidden">
+        <OnboardingModal />
         {/* Subtle particle aura using framer-motion, no heavy gradients */}
         <motion.div
           aria-hidden
@@ -78,6 +80,12 @@ export default function LandingPage() {
               <Link href="/education">
                 <GraduationCap className="mr-2 h-4 w-4" />
                 Learn More
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="lg">
+              <Link href="/education#getting-started">
+                <HelpCircle className="mr-2 h-4 w-4" />
+                Getting Started
               </Link>
             </Button>
           </motion.div>
